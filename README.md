@@ -1,44 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is Frontend Developer Take Home assesssment.
+It implements the Table Management Feature of a Restaurant.
 
-## Getting Started
+Features implemented are:
 
-First, run the development server:
+- Authentication
+- An admin flow for setting discount prices
+- Table reservation
+- Route guards based on user roles
+- Basic error handling
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. Authentication
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Using firebase as my database, I built an authentication flow to identify a new user and authorize existing user to gain access to the page depending on their roles (customer or admin).
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### 2. Admin Flow
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+I setup an admin part of the application to simulate a real world experience where an admin (maybe the owner of the restaurant or the manager) can easily update:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- The price of each table when there is discount being offered
+- The price of a given number of tables when there is a discount
+- The number of tables for which a discount is available
+  If there's a discount of 2 for 150 dollars, it can be easily updated to 3 for $250 if necessary and if the price per table changes at any point, an admin can easily make those updates and it get reflected on th customer's view.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+##### PS: There can only be one admin account:
 
-## Learn More
+email: cordelia@breeze.com
+password: 123456
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Table Reservation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+After a user creates an account and login on the application and view the tables aavailable in the restaurant.
+A customer can:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- select a table only if the table is vacant (hasn't already been booked)
+- see the discount available at the time of login.
+- select multiple tables and see all the selected tables as well as their total cost after the discount has been applied.
+- unselect/delete an already selected table
 
-## Deploy on Vercel
+### 4. Route guards based on user roles
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Once a user logs in, the user's role is immediately verified and necessary route guards are initiated.
+- A user who has the role of amin can only have access to the admin screen to update discount settings.
+- A user who has the role of customer can only view tables and has only access to the '/home' route.
+- If a user who isn't an admin routes to the '/admin' route, he is immediately redirected to the '/home' route and vice-versa.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-
-1. All folders
-2. Action creators? why?
+### 5. Basic error handling
+To ensure that users are kept in the loop and can understand what has gone wrong when there is an error, I implemented basic error handling.
